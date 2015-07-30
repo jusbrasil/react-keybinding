@@ -42,7 +42,6 @@ var Keybinding = {
    * and then either fires an inline method or the .keybinding() method.
    */
   __keybinding: function(event) {
-    if (isInput(event)) return;
     for (var i = 0; i < this.matchers.length; i++) {
       if (match(this.matchers[i].expectation, event)) {
         if (typeof this.matchers[i].action === 'function') {
@@ -61,10 +60,10 @@ var Keybinding = {
    * When the component mounts, bind our event listener and
    * add our keybindings to the global index.
    */
-  componentDidMount: function() {
+  _bindKeydown: function() {
     if (this.keybindings !== undefined) {
       this.matchers = parseEvents(this.keybindings, !!this.keybindingsPlatformAgnostic);
-      document.addEventListener('keydown', this.__keybinding);
+      document.addEventListener('keydown', this.__keybinding.bind(this));
       this.__getKeybindings().push(this.keybindings);
     }
   },
@@ -73,7 +72,7 @@ var Keybinding = {
    * When the component unmounts, unbind our event listener and
    * remove our keybindings from the global index.
    */
-  componentWillUnmount: function() {
+  _unbindKeydown: function() {
     if (this.keybindings !== undefined) {
       document.removeEventListener('keydown', this.__keybinding);
       this.__getKeybindings()
