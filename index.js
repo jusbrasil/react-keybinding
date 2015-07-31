@@ -60,7 +60,7 @@ var Keybinding = {
    * When the component mounts, bind our event listener and
    * add our keybindings to the global index.
    */
-  _bindKeydown: function() {
+  bindKeydown: function() {
     if (this.keybindings !== undefined) {
       this.matchers = parseEvents(this.keybindings, !!this.keybindingsPlatformAgnostic);
       document.addEventListener('keydown', this.__keybinding.bind(this));
@@ -72,7 +72,7 @@ var Keybinding = {
    * When the component unmounts, unbind our event listener and
    * remove our keybindings from the global index.
    */
-  _unbindKeydown: function() {
+  unbindKeydown: function() {
     if (this.keybindings !== undefined) {
       document.removeEventListener('keydown', this.__keybinding);
       this.__getKeybindings()
