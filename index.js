@@ -61,9 +61,10 @@ var Keybinding = {
    * add our keybindings to the global index.
    */
   bindKeydown: function() {
+    this.bindedKeydown = this.__keybinding.bind(this);
     if (this.keybindings !== undefined) {
       this.matchers = parseEvents(this.keybindings, !!this.keybindingsPlatformAgnostic);
-      document.addEventListener('keydown', this.__keybinding.bind(this));
+      document.addEventListener('keydown', this.bindedKeydown);
       this.__getKeybindings().push(this.keybindings);
     }
   },
@@ -74,7 +75,7 @@ var Keybinding = {
    */
   unbindKeydown: function() {
     if (this.keybindings !== undefined) {
-      document.removeEventListener('keydown', this.__keybinding);
+      document.removeEventListener('keydown', this.bindedKeydown);
       this.__getKeybindings()
         .splice(this.__getKeybindings().indexOf(this.keybindings), 1);
     }
